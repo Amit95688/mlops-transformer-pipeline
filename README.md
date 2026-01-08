@@ -54,7 +54,7 @@ cd Transformer-From-Scratch
 ---
 ```
 🚀 Quick Start
-
+```
 import torch
 from model import build_transformer
 
@@ -79,27 +79,27 @@ output = model.project(dec_out)
 
 print(output.shape)  # (32, 20, 10000)
 
-
+```
 ---
 
 🧩 Core Components
 
 🔹 Multi-Head Attention
-
+```
 from model import MultiHeadAttention
 
 mha = MultiHeadAttention(d_model=512, num_heads=8, dropout=0.1)
-
+```
 🔹 Feed Forward Network
-
+```
 from model import FeedForward
 
 ff = FeedForward(d_model=512, d_ff=2048, dropout=0.1)
-
+```
 🔹 Encoder Block
-
+```
 from model import EncoderBlock
-
+```
 encoder_block = EncoderBlock(d_model=512, self_attn=mha, feed_forward=ff, dropout=0.1)
 
 
@@ -110,14 +110,14 @@ encoder_block = EncoderBlock(d_model=512, self_attn=mha, feed_forward=ff, dropou
 Padding Mask → ignore padding tokens
 
 Look-Ahead Mask → prevent future token leakage
-
+```
 
 def create_padding_mask(seq, pad_idx=0):
     return (seq != pad_idx).unsqueeze(1).unsqueeze(2)
 
 def create_look_ahead_mask(size):
     return torch.triu(torch.ones(size, size), diagonal=1) == 0
-
+```
 
 ---
 
