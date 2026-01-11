@@ -18,3 +18,6 @@ ipython>=8.15.0
 
 # Debugging and profiling
 ipdb>=0.13.13
+
+# Data Version Control
+dvc>=3.0.0

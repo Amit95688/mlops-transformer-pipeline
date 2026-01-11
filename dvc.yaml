@@ -1,0 +1,12 @@
+stages:
+  train:
+    cmd: python train.py
+    deps:
+      - train.py
+      - model.py
+      - dataset.py
+      - config.py
+    outs:
+      - models/runs/en_hi_model
+      - tokenizer_en.json
+      - tokenizer_hi.json
