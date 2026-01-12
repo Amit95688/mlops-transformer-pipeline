@@ -1,0 +1,81 @@
+# Airflow Dockerfile for Transformer Training Pipeline
+FROM apache/airflow:2.8.0-python3.11
+
+USER root
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+USER airflow
+
+# Set working directory
+WORKDIR /opt/airflow
+
+# Copy requirements
+COPY requirements.txt .
+COPY requirements_dev.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir --user -r requirements.txt
+
+# Copy project files
+COPY --chown=airflow:root config.py .
+COPY --chown=airflow:root model.py .
+COPY --chown=airflow:root dataset.py .
+COPY --chown=airflow:root train.py .
+COPY --chown=airflow:root tokenizer_en.json .
+COPY --chown=airflow:root tokenizer_hi.json .
+
+# Copy Airflow configuration and DAGs
+COPY --chown=airflow:root airflow.cfg /opt/airflow/airflow.cfg
+COPY --chown=airflow:root dags/ /opt/airflow/dags/
+
+# Set environment variables
+ENV AIRFLOW_HOME=/opt/airflow
+ENV AIRFLOW__CORE__LOAD_EXAMPLES=False
+ENV AIRFLOW__CORE__DAGS_FOLDER=/opt/airflow/dags
+ENV AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=sqlite:////opt/airflow/airflow.db
+ENV PYTHONPATH=/opt/airflow:$PYTHONPATH
+
+# Create necessary directories
+RUN mkdir -p /opt/airflow/logs \
+    /opt/airflow/dags \
+    /opt/airflow/plugins \
+    /opt/airflow/models \
+    /opt/airflow/runs
+
+# Expose Airflow webserver port
+EXPOSE 8080
+
+# Initialize database and create admin user on first run
+COPY --chown=airflow:root <<EOF /opt/airflow/init-airflow.sh
+#!/bin/bash
+set -e
+
+if [ ! -f "/opt/airflow/airflow.db" ]; then
+    echo "Initializing Airflow database..."
+    airflow db init
+    
+    echo "Creating admin user..."
+    airflow users create \
+        --username admin \
+        --firstname Admin \
+        --lastname User \
+        --role Admin \
+        --email admin@example.com \
+        --password admin
+    
+    echo "Airflow initialization complete!"
+else
+    echo "Database already exists, upgrading..."
+    airflow db upgrade
+fi
+EOF
+
+RUN chmod +x /opt/airflow/init-airflow.sh
+
+# Default command: Initialize DB, then start webserver and scheduler
+CMD ["/bin/bash", "-c", "/opt/airflow/init-airflow.sh && airflow webserver & airflow scheduler"]

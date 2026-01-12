@@ -1,0 +1,29 @@
+# Development dependencies (includes production dependencies)
+-r requirements.txt
+
+# Experiment tracking
+mlflow>=2.10.0
+
+# Testing and code quality
+pytest>=7.4.0
+pytest-cov>=4.1.0
+black>=23.9.0
+flake8>=6.1.0
+isort>=5.12.0
+mypy>=1.5.0
+
+# Jupyter and notebooks
+jupyter>=1.0.0
+ipython>=8.15.0
+
+# Debugging and profiling
+ipdb>=0.13.13
+
+# Additional testing
+pytest-xdist>=3.3.0
+
+# Linting
+pylint>=2.17.0
+
+# Data Version Control
+dvc>=3.0.0

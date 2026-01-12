@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-10">
+    <div class="glass p-4 p-md-5 mb-4">
+      <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
+        <div>
+          <p class="text-uppercase mb-1 small text-white-50">Realtime decode (EN → HI)</p>
+          <h1 class="h3 fw-semibold mb-2">Transformer Translator</h1>
+          <p class="mb-0 text-white-50">Run quick checks while training keeps going in the background.</p>
+        </div>
+        <div class="d-flex gap-2 align-items-center flex-wrap">
+          <span class="badge badge-soft">Device: {{ device }}</span>
+          {% if checkpoint_name %}
+            <span class="badge bg-success text-dark">Checkpoint: {{ checkpoint_name }}</span>
+          {% else %}
+            <span class="badge bg-secondary">No checkpoint yet</span>
+          {% endif %}
+          {% if ready %}
+            <span class="badge bg-info text-dark">Ready</span>
+          {% else %}
+            <span class="badge bg-warning text-dark">Waiting for model</span>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if status %}
+        <div class="mb-4">
+          <div class="d-flex align-items-center mb-2">
+            <span class="me-2 text-white-50">Status</span>
+            <div class="flex-grow-1 border-bottom border-secondary" style="opacity:0.4;"></div>
+          </div>
+          <ul class="mb-0 ps-3 small text-white-50">
+            {% for item in status %}
+              <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      <form method="post" novalidate>
+        <div class="mb-3">
+          <label for="text" class="form-label">English text</label>
+          <textarea class="form-control" id="text" name="text" rows="4" placeholder="Type a sentence to translate" required>{{ input_text }}</textarea>
+        </div>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-accent" {% if not ready %}disabled{% endif %}>Translate</button>
+          {% if not ready %}
+            <span class="text-white-50 small">Waiting for a checkpoint to enable translation.</span>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+
+    <div class="glass p-4 p-md-5">
+      <div class="d-flex align-items-center mb-3">
+        <span class="me-2 text-white-50">Output</span>
+        <div class="flex-grow-1 border-bottom border-secondary" style="opacity:0.4;"></div>
+      </div>
+      {% if translated_text %}
+        <p class="fs-5 mb-0">{{ translated_text }}</p>
+      {% else %}
+        <p class="text-white-50 mb-0">Submit a sentence to see the Hindi translation here.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
