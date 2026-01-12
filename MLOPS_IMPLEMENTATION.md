@@ -24,52 +24,9 @@ flake8 . --count --select=E9,F63,F7,F82
 
 ---
 
-## 2. Model Serving API (FastAPI)
 
-### What's Implemented
-- **Production API**: FastAPI server with Pydantic validation
-- **Health Check**: `/health` endpoint monitoring model status
-- **Predictions**: `/predict` endpoint for translations
-- **Metrics**: `/metrics` endpoint for performance monitoring
-- **Model Versioning**: Track model version with predictions
 
-### Files
-- `api_server.py` - FastAPI application
-- `monitoring/logger.py` - Structured logging
-- `monitoring/metrics.py` - Metrics collection
-
-### How to Use
-
-**Install dependencies:**
-```bash
-pip install -r requirements.txt
-```
-
-**Start API server:**
-```bash
-python api_server.py
-```
-
-**Test endpoints:**
-```bash
-# Health check
-curl http://localhost:8000/health
-
-# Make prediction
-curl -X POST http://localhost:8000/predict \
-  -H "Content-Type: application/json" \
-  -d '{"text": "hello world"}'
-
-# Get metrics
-curl http://localhost:8000/metrics
-
-# API documentation
-http://localhost:8000/docs
-```
-
----
-
-## 3. Testing Framework (Pytest)
+## 2. Testing Framework (Pytest)
 
 ### What's Implemented
 - **Unit Tests**: Model building, data loading, configuration
@@ -109,7 +66,7 @@ pytest tests/ -n auto
 
 ---
 
-## 4. Monitoring & Observability
+## 3. Monitoring & Observability
 
 ### What's Implemented
 - **Structured Logging**: JSON-formatted logs for analysis
