@@ -495,7 +495,7 @@ MIT License - See [LICENSE](LICENSE) file for details.
 
 - 🐛 [Report Issues](https://github.com/Amit95688/Transformer-From-Scratch/issues)
 - 💬 [Discussions](https://github.com/Amit95688/Transformer-From-Scratch/discussions)
-- 📧 Email: amit95688@example.com
+- 📧 Email: kingwar300705@example.com
 
 ---
 
