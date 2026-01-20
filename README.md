@@ -120,32 +120,53 @@ docker compose up -d
 ### Project Structure
 ```
 transformer/
-├── src/TransformerModel/
-│   ├── components/              # Core ML components
-│   │   ├── data_ingestion.py    # HuggingFace dataset loading
-│   │   ├── data_transformation.py # Tokenization & batching
-│   │   ├── model_trainer.py     # Transformer model
-│   │   └── model_evaluation.py  # Metrics & validation
-│   ├── pipelines/               # End-to-end workflows
-│   │   ├── training_pipeline.py # Training workflow
-│   │   └── prediction_pipeline.py # Inference API
-│   └── utils/                   # Utilities
-│       ├── utils.py
-│       ├── logger.py
-│       ├── metrics.py
-│       └── exception.py
+├── src/
+│   └── TransformerModel/
+│       ├── components/               # Core ML components
+│       │   ├── data_ingestion.py     # Dataset loading (HuggingFace datasets)
+│       │   ├── data_transformation.py# Tokenization, preprocessing & batching
+│       │   ├── model_trainer.py      # Transformer model and training logic
+│       │   └── model_evaluation.py   # Metrics, validation & evaluation
+│       │
+│       ├── pipelines/                # End-to-end workflows
+│       │   ├── training_pipeline.py  # Full training workflow
+│       │   └── prediction_pipeline.py# Inference / prediction API
+│       │
+│       └── utils/                    # Utility modules
+│           ├── logger.py             # Logging setup
+│           ├── metrics.py            # Metric calculation functions
+│           ├── exception.py          # Custom exception handling
+│           └── utils.py              # Misc utility functions
+│
 ├── config/
-│   └── config.py                # Hyperparameters
-├── data/tokenizers/             # SentencePiece models
-├── models/                      # Saved checkpoints
-├── templates/                   # HTML templates
-├── tests/                       # Unit & integration tests
-├── app.py                       # Flask application
-├── Dockerfile                   # Main container
-├── Dockerfile.airflow           # Airflow container
-├── docker-compose.yml           # Multi-container setup
-├── requirements.txt             # Dependencies
-└── README.md                    # This file
+│   └── config.py                     # Hyperparameters and configuration
+│
+├── data/
+│   ├── tokenizers/                   # Saved tokenizer files
+│   └── raw/                           # Optional: raw downloaded datasets
+│
+├── models/                            # Saved model checkpoints and final models
+│
+├── logs/                              # Airflow & training logs
+│
+├── dags/                              # Airflow DAG definitions
+│   └── transformer_dag.py
+│
+├── tests/                             # Unit and integration tests
+│
+├── templates/                         # Flask templates (if API visualization)
+│
+├── scripts/                           # Helper scripts
+│   ├── start_airflow.py               # Launch Airflow scheduler/webserver
+│   └── launch_mlflow_ui.py            # Launch MLflow server locally
+│
+├── Dockerfile                         # Main container (API + ML pipeline)
+├── Dockerfile.airflow                  # Airflow container
+├── docker-compose.yml                  # Multi-container setup (Airflow + MLflow)
+├── dvc.yaml                            # DVC pipeline stages
+├── requirements.txt                    # Python dependencies
+├── app.py                              # Flask API entrypoint
+└── README.md                           # Project overview
 ```
 
 ---
